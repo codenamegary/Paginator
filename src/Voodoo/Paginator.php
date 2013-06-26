@@ -43,12 +43,24 @@ class Paginator implements IteratorAggregate
     private $nextTitle = "Next";
     private $firstTitle = "First";
     private $lastTitle = "Last";
+    protected $builders = array();
     
 
     
     public function __construct($pagePattern = "") 
     {
         $this->setUrl($this->getUri(), $pagePattern);
+    }
+    
+    public function registerBuilder($builder)
+    {
+        $this->builders[$builder->getName()] = $builder;
+    }
+    
+    public function getBuilder($name)
+    {
+        $this->builders[$name]->setPaginator($this);
+        return $this->builders[$name];
     }
     
     public function setUrl($url, $pagePattern = null) 
